@@ -1,1 +1,8 @@
-build/*
+build/
+sdist/
+dist/
+lib/
+.py[cod]
+*.egg
+nosetests.xml
+coverage.xml
