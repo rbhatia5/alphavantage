@@ -2,7 +2,7 @@ build/
 sdist/
 dist/
 lib/
-.py[cod]
+*.py[cod]
 *.egg
 nosetests.xml
 coverage.xml
