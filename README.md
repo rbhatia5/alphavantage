@@ -12,6 +12,7 @@ from alphavantage.timeseries import TimeSeries
 
 msft = TimeSeries("MSFT")
 
+## Returns a pandas Dataframe
 df = msft.daily()
 
 ```
