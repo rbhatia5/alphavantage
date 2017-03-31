@@ -4,5 +4,6 @@ dist/
 lib/
 *.py[cod]
 *.egg
+*.egg-info
 nosetests.xml
 coverage.xml

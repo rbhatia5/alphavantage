@@ -1,11 +1,14 @@
 """
 Houses classes to access the Time Series on AlphaVantage
 """
-
+import logging
 import pandas as pd
 import requests
 
 from alphavantage import API_KEY, API_URI
+from alphavantage import AlphaVantageException
+
+LOGGER = logging.getLogger(__name__)
 
 class Intraday():
     INTERVAL_1MIN  = "1min"
@@ -37,6 +40,9 @@ class TimeSeries():
         }
         resp = requests.get(API_URI, params=data)
         resp.raise_for_status()
+        if "Error Message" in resp.json().keys():
+            raise AlphaVantageException("%s" % resp.json()['Error Message'])
+        LOGGER.debug("Got response with keys: %s" % str(resp.json().keys()))
         df = pd.DataFrame.from_dict(resp.json()['Time Series ({})'.format(interval)],
                     orient='index')
         df.index = pd.to_datetime(df.index)
@@ -45,6 +51,8 @@ class TimeSeries():
                                 '2. high'  : 'high',
                                 '1. open'  : 'open',
                                 '3. low'   : 'low'})
+        df[df.columns] = df[df.columns].apply(pd.to_numeric)
+        df.name = self._symbol
         return df
 
     def daily(self, outputsize="compact"):
@@ -52,11 +60,14 @@ class TimeSeries():
         data = {
             "function"   : FUNCTION_DAILY,
             "symbol"     : self._symbol,
-            #"outputsize" : outputsize,
+            "outputsize" : outputsize,
             "apikey"     : self.api_key
         }
         resp = requests.get(API_URI, params=data)
         resp.raise_for_status()
+        if "Error Message" in resp.json().keys():
+            raise AlphaVantageException("%s" % resp.json()['Error Message'])
+        LOGGER.debug("Got response with keys: %s" % str(resp.json().keys()))
         df = pd.DataFrame.from_dict(resp.json()['Time Series (Daily)'],
                     orient='index')
         df.index = pd.to_datetime(df.index)
@@ -65,6 +76,8 @@ class TimeSeries():
                                 '2. high'  : 'high',
                                 '1. open'  : 'open',
                                 '3. low'   : 'low'})
+        df[df.columns] = df[df.columns].apply(pd.to_numeric)
+        df.name = self._symbol
         return df
 
     def weekly(self):
@@ -76,6 +89,9 @@ class TimeSeries():
         }
         resp = requests.get(API_URI, params=data)
         resp.raise_for_status()
+        if "Error Message" in resp.json().keys():
+            raise AlphaVantageException("%s" % resp.json()['Error Message'])
+        LOGGER.debug("Got response with keys: %s" % str(resp.json().keys()))
         df = pd.DataFrame.from_dict(resp.json()['Weekly Time Series'],
                     orient='index')
         df.index = pd.to_datetime(df.index)
@@ -84,6 +100,8 @@ class TimeSeries():
                                 '2. high'  : 'high',
                                 '1. open'  : 'open',
                                 '3. low'   : 'low'})
+        df[df.columns] = df[df.columns].apply(pd.to_numeric)
+        df.name = self._symbol
         return df
 
     
@@ -96,6 +114,9 @@ class TimeSeries():
         }
         resp = requests.get(API_URI, params=data)
         resp.raise_for_status()
+        if "Error Message" in resp.json().keys():
+            raise AlphaVantageException("%s" % resp.json()['Error Message'])
+        LOGGER.debug("Got response with keys: %s" % str(resp.json().keys()))
         df = pd.DataFrame.from_dict(resp.json()['Monthly Time Series'],
                     orient='index')
         df.index = pd.to_datetime(df.index)
@@ -104,4 +125,6 @@ class TimeSeries():
                                 '2. high'  : 'high',
                                 '1. open'  : 'open',
                                 '3. low'   : 'low'})
+        df[df.columns] = df[df.columns].apply(pd.to_numeric)
+        df.name = self._symbol
         return df
