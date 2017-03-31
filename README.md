@@ -11,7 +11,6 @@ You can get this key from [http://www.alphavantage.co](http://www.alphavantage.c
 from alphavantage.timeseries import TimeSeries
 
 msft = TimeSeries("MSFT")
-
 ## Returns a pandas Dataframe
 df = msft.daily()
 
