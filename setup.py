@@ -7,6 +7,6 @@ setup(name='alphavantage',
     author='Rahul Bhatia',
     author_email='rahul.bhatia.k@gmail.com',
     packages=['alphavantage'],
-    install_requries=[]
+    install_requires=[]
 )
 

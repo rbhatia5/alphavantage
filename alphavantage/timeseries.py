@@ -104,7 +104,6 @@ class TimeSeries():
         df.name = self._symbol
         return df
 
-    
     def monthly(self):
         FUNCTION_MONTHLY="TIME_SERIES_MONTHLY"
         data = {
